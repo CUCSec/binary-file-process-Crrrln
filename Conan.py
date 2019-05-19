@@ -2,7 +2,17 @@ import struct
 
 
 def tamper(student_id):
-  pass
+  count=0
+  with open('lenna.bmp', 'r+b') as f:
+    f.seek(54)
+    while(count<12):
+      i=student_id[count]
+      count+=1
+      i=int(i)
+      if i==0:
+        i=10
+      f.seek(3*i,1)
+      f.write(b'\x00\x00\x00')
 
 
 def detect():
@@ -26,7 +36,7 @@ def detect():
         else:
           print(offset - last_offset)
 
-        last_offset = offset
+        last_offset = offset+1
         count -= 1
 
       offset += 1
